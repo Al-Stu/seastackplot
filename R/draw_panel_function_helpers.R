@@ -54,8 +54,8 @@ baselineGrob <- function(coords, vertical = T){
                        y1 = coords$max
     )
   } else{
-    grid::segmentsGrob(x0 = coords$Min,
-                       x1 = coords$Max,
+    grid::segmentsGrob(x0 = coords$min,
+                       x1 = coords$max,
                        y0 = coords$y.scaled.0,
                        y1 = coords$y.scaled.0)
   }
@@ -79,10 +79,10 @@ standardDevGrob <- function(coords, vertical = T){
                    gp = gp
     )
   } else{
-    grid::rectGrob(x = coords$xMean,
+    grid::rectGrob(x = coords$mean,
                    y = coords$y.scaled.0,
                    width = coords$upper.standard.dev - coords$lower.standard.dev,
-                   height = coords$x.scaled.1, # base this off of scaled max bin size
+                   height = coords$y.scaled.1, # base this off of scaled max bin size
                    just = c("centre", "top"),
                    gp = gp
                    )

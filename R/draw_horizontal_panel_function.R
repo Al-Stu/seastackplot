@@ -1,4 +1,4 @@
-#' draw_panel_function
+#' draw_horizontal_panel_function
 #'
 #' @param data the data being plotted
 #' @param panel_params the parameters of the plot panel
@@ -13,13 +13,13 @@
 #' @param show.median whether the median should be plotted
 #'
 #' @import ggplot2
-draw_panel_function <- function(data, panel_params, coord,
+draw_horizontal_panel_function <- function(data, panel_params, coord,
                                 bin.width, mean.size, median.size,
                                 show.standard.dev, show.confidence.int,
                                 show.mean, show.median) {
   ## compute the basic stats of the data
-  df.stats <- dfStats(value = data$y, bin.width = bin.width)
-  vertical <- T
+  df.stats <- dfStats(value = data$x, bin.width = bin.width)
+  vertical <- F
 
   ## rescale the coordinated and stats so they follow the ggplot coordinate system
   coords <- coord$transform(data, panel_params) %>%
@@ -56,7 +56,7 @@ draw_panel_function <- function(data, panel_params, coord,
     mean.diamond <- meanGrob(coords = coords,
                              mean.size = mean.size,
                              vertical = vertical
-                             )
+    )
   } else{
     mean.diamond <- grid::nullGrob()
   }
@@ -73,12 +73,12 @@ draw_panel_function <- function(data, panel_params, coord,
 
   ## return all the grobs to be drawn
   grid::gTree(children = grid::gList(base.line,
-                               standard.dev.rectangle,
-                               lower.ci.line,
-                               upper.ci.line,
-                               mean.diamond,
-                               median.dot
-                               )
-              )
+                                     standard.dev.rectangle,
+                                     lower.ci.line,
+                                     upper.ci.line,
+                                     mean.diamond,
+                                     median.dot
+  )
+  )
 
 }

@@ -1,18 +1,14 @@
-# this line is just copied from raincloudplots
-#' @importFrom utils globalVariables
-globalVariables(c("layer"))
-
 # this roxygen description is just copied from raincloudplots
-#' ggplot2-ggproto
-#' @rdname ggplot2-ggproto
+#' ggplot2-horizontal-ggproto
+#' @rdname ggplot2-horizontal-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomSeastackStats <- ggplot2::ggproto("GeomSeastackStats", ggplot2::Geom,
-                             required_aes = c("y", "bin.width", "orientation", "mean.size", "median.size", "show.standard.dev", "show.confidence.int", "show.mean", "show.median"),
-                             draw_key = ggplot2::draw_key_point,
-                             draw_panel = draw_panel_function
-                             )
+GeomHorizontalSeastackStats <- ggplot2::ggproto("GeomHorizontalSeastackStats", ggplot2::Geom,
+                                      required_aes = c("x", "bin.width", "mean.size", "median.size", "show.standard.dev", "show.confidence.int", "show.mean", "show.median"),
+                                      draw_key = ggplot2::draw_key_point,
+                                      draw_panel = draw_horizontal_panel_function
+)
 
 #' geom_sea_stack
 #'
@@ -31,15 +27,14 @@ GeomSeastackStats <- ggplot2::ggproto("GeomSeastackStats", ggplot2::Geom,
 #'
 #' @import ggplot2
 #' @export
-geom_seastack_stats <- function(mapping = NULL, data = NULL, stat = "identity",
+geom_horizontal_seastack_stats <- function(mapping = NULL, data = NULL, stat = "identity",
                                 position = "identity", na.rm = FALSE, show.legend = NA,
                                 inherit.aes = TRUE, bin.width = 1,
-                                orientation = "vertical",
                                 mean.size = 4, median.size = 3.2,
                                 show.standard.dev = T, show.confidence.int = F,
                                 show.mean = T, show.median = F, ...) {
   layer(
-    geom = GeomSeastackStats, mapping = mapping,  data = data, stat = stat,
+    geom = GeomHorizontalSeastackStats, mapping = mapping,  data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(na.rm = na.rm,
                   bin.width = bin.width,
@@ -48,7 +43,6 @@ geom_seastack_stats <- function(mapping = NULL, data = NULL, stat = "identity",
                   show.mean = show.mean,
                   show.median = show.median,
                   mean.size = mean.size,
-                  median.size = median.size,
-                  orientation = orientation, ...)
-    )
+                  median.size = median.size, ...)
+  )
 }

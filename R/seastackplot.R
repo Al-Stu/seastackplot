@@ -74,8 +74,7 @@ sea_stack_plot <- function(data,
                           show.mean = show.mean,
                           show.median = show.median,
                           show.standard.dev = show.standard.dev,
-                          show.confidence.int = show.confidence.int,
-                          orientation = "vertical"
+                          show.confidence.int = show.confidence.int
                           ) +
       scale_x_reverse() +
       theme_seastack() +
@@ -88,16 +87,14 @@ sea_stack_plot <- function(data,
                      aes(fill = group), # have this here so it doesn't override the default fills of everything else
                      colour = NA # **** IF YOU LEAVE THIS OUT IT'LL PLOT A LINE ALONG THE WHOLE X-AXIS !!!! WHICH WILL OBSCURE THE BASELINE !!!!
       ) +
-      geom_seastack_stats(bin.width = bin.width,
+      geom_horizontal_seastack_stats(bin.width = bin.width,
                           mean.size = mean.size,
                           median.size = median.size,
                           show.mean = show.mean,
                           show.median = show.median,
                           show.standard.dev = show.standard.dev,
-                          show.confidence.int = show.confidence.int,
-                          orientation = "horizontal"
+                          show.confidence.int = show.confidence.int
       ) +
-      scale_y_reverse() +
       theme_seastack() +
       labs(x = data.label, y = "Counts")
   } else{
