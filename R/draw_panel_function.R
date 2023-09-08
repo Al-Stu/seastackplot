@@ -1,3 +1,18 @@
+#' draw_panel_function
+#'
+#' @param data the data being plotted
+#' @param panel_params the parameters of the plot panel
+#' @param coord the coordinates of the plot (I don't fully understand this)
+#' @param bin.width the bin width being used to plot
+#' @param mean.size the size of the mean diamond
+#' @param median.size the size of the median point
+#' @param show.standard.dev whether the standard deviation rectangle should be
+#' plotted
+#' @param show.confidence.int whether the confidence interval should be plotted
+#' @param show.mean whether the mean should be plotted
+#' @param show.median whether the median should be plotted
+#'
+#' @import ggplot2
 draw_panel_function <- function(data, panel_params, coord,
                                 bin.width, mean.size, median.size,
                                 show.standard.dev, show.confidence.int,
