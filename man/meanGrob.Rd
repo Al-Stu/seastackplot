@@ -4,12 +4,15 @@
 \alias{meanGrob}
 \title{Mean grob}
 \usage{
-meanGrob(coords, mean.size = 4)
+meanGrob(coords, mean.size = 4, vertical = T)
 }
 \arguments{
 \item{coords}{the transformed coordinates and stats}
 
 \item{mean.size}{the size you want the mean point to be}
+
+\item{vertical}{whether or not the plot is being plotter vertically (as
+opposed to horizontally)}
 }
 \description{
 This function allows you to create the mean pointsGrob

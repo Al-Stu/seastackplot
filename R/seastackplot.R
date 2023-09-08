@@ -1,6 +1,6 @@
 #' geom_sea_stack
 #'
-#' add seastack statistics to your vertical histogram! uses standard ggplot
+#' Add seastack statistics to your vertical histogram! Uses standard ggplot
 #' parameters on top of those described
 #' @param data the data to be plotted
 #' @param data.column the name of the column containing the data to be plotted
@@ -15,6 +15,8 @@
 #' @param show.confidence.int whether the confidence interval should be plotted
 #' @param show.mean whether the mean should be plotted
 #' @param show.median whether the median should be plotted
+#' @param orientation "vertical" or "horizontal" whether or not the plot is being
+#' plotted vertically (default) or horizontally
 #'
 #' @import ggplot2
 #' @export
@@ -72,13 +74,32 @@ sea_stack_plot <- function(data,
                           show.mean = show.mean,
                           show.median = show.median,
                           show.standard.dev = show.standard.dev,
-                          show.confidence.int = show.confidence.int
+                          show.confidence.int = show.confidence.int,
+                          orientation = "vertical"
                           ) +
       scale_x_reverse() +
       theme_seastack() +
-      labs(y = data.label, x = "Counts")
+      labs(x = "Counts", y = data.label)
   } else if(orientation == 'horizontal'){
-    warning('horizontal orientation not currently supported')
+    figure <- ggplot(df, aes(x = value)) +
+      facet_wrap(~ group, nrow = 1) +
+      geom_histogram(breaks = hist.breaks,
+                     orientation = 'x',
+                     aes(fill = group), # have this here so it doesn't override the default fills of everything else
+                     colour = NA # **** IF YOU LEAVE THIS OUT IT'LL PLOT A LINE ALONG THE WHOLE X-AXIS !!!! WHICH WILL OBSCURE THE BASELINE !!!!
+      ) +
+      geom_seastack_stats(bin.width = bin.width,
+                          mean.size = mean.size,
+                          median.size = median.size,
+                          show.mean = show.mean,
+                          show.median = show.median,
+                          show.standard.dev = show.standard.dev,
+                          show.confidence.int = show.confidence.int,
+                          orientation = "horizontal"
+      ) +
+      scale_y_reverse() +
+      theme_seastack() +
+      labs(x = data.label, y = "Counts")
   } else{
     warning('unrecognised value for orientation, please use either \"horizontal\" or \"vertical\"')
   }

@@ -4,10 +4,13 @@
 \alias{baselineGrob}
 \title{Baseline grob}
 \usage{
-baselineGrob(coords)
+baselineGrob(coords, vertical = T)
 }
 \arguments{
 \item{coords}{the transformed coordinates and stats}
+
+\item{vertical}{whether or not the plot is being plotter vertically (as
+opposed to horizontally)}
 }
 \description{
 This function allows you to create the baseline segmentGrob

@@ -14,7 +14,8 @@ draw_panel_function(
   show.standard.dev,
   show.confidence.int,
   show.mean,
-  show.median
+  show.median,
+  orientation = "vertical"
 )
 }
 \arguments{
@@ -38,6 +39,9 @@ plotted}
 \item{show.mean}{whether the mean should be plotted}
 
 \item{show.median}{whether the median should be plotted}
+
+\item{orientation}{"vertical" or "horizontal" whether or not the plot is being
+plotted vertically (default) or horizontally}
 }
 \description{
 draw_panel_function

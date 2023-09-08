@@ -1,3 +1,4 @@
+# this line is just copied from raincloudplots
 #' @importFrom utils globalVariables
 globalVariables(c("layer",  "GeomFlatViolin"))
 
@@ -8,7 +9,7 @@ globalVariables(c("layer",  "GeomFlatViolin"))
 #' @usage NULL
 #' @export
 GeomSeastackStats <- ggplot2::ggproto("GeomSeastackStats", ggplot2::Geom,
-                             required_aes = c("y", "bin.width", "mean.size", "median.size", "show.standard.dev", "show.confidence.int", "show.mean", "show.median"),
+                             required_aes = c("y", "bin.width", "orientation", "mean.size", "median.size", "show.standard.dev", "show.confidence.int", "show.mean", "show.median"),
                              draw_key = ggplot2::draw_key_point,
                              draw_panel = draw_panel_function
                              )
@@ -25,12 +26,15 @@ GeomSeastackStats <- ggplot2::ggproto("GeomSeastackStats", ggplot2::Geom,
 #' @param show.confidence.int whether the confidence interval should be plotted
 #' @param show.mean whether the mean should be plotted
 #' @param show.median whether the median should be plotted
+#' @param orientation "vertical" or "horizontal" whether or not the plot is being
+#' plotted vertically (default) or horizontally
 #'
 #' @import ggplot2
 #' @export
 geom_seastack_stats <- function(mapping = NULL, data = NULL, stat = "identity",
                                 position = "identity", na.rm = FALSE, show.legend = NA,
                                 inherit.aes = TRUE, bin.width = 1,
+                                orientation = "vertical",
                                 mean.size = 4, median.size = 3.2,
                                 show.standard.dev = T, show.confidence.int = F,
                                 show.mean = T, show.median = F, ...) {
@@ -44,6 +48,7 @@ geom_seastack_stats <- function(mapping = NULL, data = NULL, stat = "identity",
                   show.mean = show.mean,
                   show.median = show.median,
                   mean.size = mean.size,
-                  median.size = median.size, ...)
+                  median.size = median.size,
+                  orientation = orientation, ...)
     )
 }

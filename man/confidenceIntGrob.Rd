@@ -4,12 +4,15 @@
 \alias{confidenceIntGrob}
 \title{Confidence interval grob}
 \usage{
-confidenceIntGrob(coords, upper.or.lower)
+confidenceIntGrob(coords, upper.or.lower, vertical = T)
 }
 \arguments{
 \item{coords}{the transformed coordinates and stats}
 
 \item{upper.or.lower}{whether it is the upper or lower bound being plotted}
+
+\item{vertical}{whether or not the plot is being plotter vertically (as
+opposed to horizontally)}
 }
 \description{
 This function allows you to create one of the linesGrob for the confidence

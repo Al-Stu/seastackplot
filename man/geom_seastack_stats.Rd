@@ -13,6 +13,7 @@ geom_seastack_stats(
   show.legend = NA,
   inherit.aes = TRUE,
   bin.width = 1,
+  orientation = "vertical",
   mean.size = 4,
   median.size = 3.2,
   show.standard.dev = T,
@@ -24,6 +25,9 @@ geom_seastack_stats(
 }
 \arguments{
 \item{bin.width}{the bin width being used to plot}
+
+\item{orientation}{"vertical" or "horizontal" whether or not the plot is being
+plotted vertically (default) or horizontally}
 
 \item{mean.size}{the size of the mean diamond}
 

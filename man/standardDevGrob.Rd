@@ -4,10 +4,13 @@
 \alias{standardDevGrob}
 \title{Standard deviation grob}
 \usage{
-standardDevGrob(coords)
+standardDevGrob(coords, vertical = T)
 }
 \arguments{
 \item{coords}{the transformed coordinates and stats}
+
+\item{vertical}{whether or not the plot is being plotter vertically (as
+opposed to horizontally)}
 }
 \description{
 This function allows you to create the standard deviation rectGrob

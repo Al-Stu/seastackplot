@@ -35,7 +35,8 @@ sea_stack_plot(
 
 \item{median.size}{the size of the median point}
 
-\item{orientation}{the orientation of the plot to be plotted}
+\item{orientation}{"vertical" or "horizontal" whether or not the plot is being
+plotted vertically (default) or horizontally}
 
 \item{show.mean}{whether the mean should be plotted}
 
@@ -47,6 +48,6 @@ plotted}
 \item{show.confidence.int}{whether the confidence interval should be plotted}
 }
 \description{
-add seastack statistics to your vertical histogram! uses standard ggplot
+Add seastack statistics to your vertical histogram! Uses standard ggplot
 parameters on top of those described
 }

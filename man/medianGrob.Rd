@@ -4,12 +4,15 @@
 \alias{medianGrob}
 \title{Median grob}
 \usage{
-medianGrob(coords, median.size = 3.2)
+medianGrob(coords, median.size = 3.2, vertical = T)
 }
 \arguments{
 \item{coords}{the transformed coordinates and stats}
 
 \item{median.size}{the size you want the mean point to be}
+
+\item{vertical}{whether or not the plot is being plotter vertically (as
+opposed to horizontally)}
 }
 \description{
 This function allows you to create the median pointsGrob

@@ -4,7 +4,7 @@
 \alias{transformStats}
 \title{Transform stats}
 \usage{
-transformStats(transformed.coords, df.stats, panel_params)
+transformStats(transformed.coords, df.stats, panel_params, vertical = T)
 }
 \arguments{
 \item{transformed.coords}{transformed base coordinates}
@@ -13,6 +13,9 @@ transformStats(transformed.coords, df.stats, panel_params)
 dfStats)}
 
 \item{panel_params}{the parameters of the plot panel}
+
+\item{vertical}{whether or not the plot is being plotter vertically (as
+opposed to horizontally)}
 }
 \description{
 This function allows you to transform the stats into the ggplot graph's
