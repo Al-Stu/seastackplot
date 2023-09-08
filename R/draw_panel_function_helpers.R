@@ -10,16 +10,16 @@
 #' @param panel_params the parameters of the plot panel
 transformStats <- function(transformed.coords, df.stats, panel_params){
   transformed.coords %>%
-    dplyr::mutate(x.scaled.0 = rescale(0, from = panel_params$x.range),
-                  x.scaled.1 = rescale(1, from = panel_params$x.range),
-                  min = rescale(df.stats$min, from = panel_params$y.range),
-                  max = rescale(df.stats$max, from = panel_params$y.range),
-                  mean = rescale(df.stats$mean, from = panel_params$y.range),
-                  median = rescale(df.stats$median, from = panel_params$y.range),
-                  lower.standard.dev = rescale(df.stats$lower.standard.dev, from = panel_params$y.range),
-                  upper.standard.dev = rescale(df.stats$upper.standard.dev, from = panel_params$y.range),
-                  lower.confidence.int = rescale(df.stats$lower.confidence.int, from = panel_params$y.range),
-                  upper.confidence.int = rescale(df.stats$upper.confidence.int, from = panel_params$y.range)
+    dplyr::mutate(x.scaled.0 = scales::rescale(0, from = panel_params$x.range),
+                  x.scaled.1 = scales::rescale(1, from = panel_params$x.range),
+                  min = scales::rescale(df.stats$min, from = panel_params$y.range),
+                  max = scales::rescale(df.stats$max, from = panel_params$y.range),
+                  mean = scales::rescale(df.stats$mean, from = panel_params$y.range),
+                  median = scales::rescale(df.stats$median, from = panel_params$y.range),
+                  lower.standard.dev = scales::rescale(df.stats$lower.standard.dev, from = panel_params$y.range),
+                  upper.standard.dev = scales::rescale(df.stats$upper.standard.dev, from = panel_params$y.range),
+                  lower.confidence.int = scales::rescale(df.stats$lower.confidence.int, from = panel_params$y.range),
+                  upper.confidence.int = scales::rescale(df.stats$upper.confidence.int, from = panel_params$y.range)
                   )
 }
 
@@ -45,7 +45,7 @@ standardDevGrob <- function(coords){
                  height = coords$upper.standard.dev - coords$lower.standard.dev,
                  width = coords$x.scaled.1, # base this off of scaled max bin size
                  just = c("left", "centre"),
-                 gp=gpar(fill="grey30",
+                 gp=grid::gpar(fill="grey30",
                          col = NA
                          )
                  )
@@ -67,7 +67,7 @@ confidenceIntGrob <- function(coords, upper.or.lower){
 
   grid::linesGrob(x = c(coords$x.scaled.0, coords$x.scaled.1),
                   y = y,
-                  gp = gpar(col = "red", lwd = 2.5)
+                  gp = grid::gpar(col = "red", lwd = 2.5)
                   )
 }
 
@@ -80,7 +80,7 @@ meanGrob <- function(coords, mean.size = 4){
   grid::pointsGrob(y = coords$mean,
                    x = coords$x.scaled.0, # this should be adjustable and equal to half the height of the sd rectangle
                    pch = 23,
-                   gp = gpar(size = mean.size)
+                   gp = grid::gpar(size = mean.size)
                    )
 }
 
@@ -93,6 +93,6 @@ medianGrob <- function(coords, median.size = 3.2){
   grid::pointsGrob(y = coords$median,
                    x = coords$x.scaled.0, # this should be adjustable and equal to half the height of the sd rectangle
                    pch = 16,
-                   gp = gpar(size = median.size)
+                   gp = grid::gpar(size = median.size)
                    )
 }

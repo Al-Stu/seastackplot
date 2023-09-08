@@ -62,7 +62,7 @@ draw_panel_function <- function(data, panel_params, coord,
   }
 
   ## return all the grobs to be drawn
-  grid::gTree(children = gList(base.line,
+  grid::gTree(children = grid::gList(base.line,
                                standard.dev.rectangle,
                                lower.ci.line,
                                upper.ci.line,
