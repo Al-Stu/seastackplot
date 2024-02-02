@@ -1,7 +1,7 @@
-#' geom_sea_stack
+#' seastackplot
 #'
-#' Add seastack statistics to your vertical histogram! Uses standard ggplot
-#' parameters on top of those described
+#' Plot a sea stack plot with summary statistics and histogram! This is the
+#' easiest way to plot a sea stack plot.
 #' @param data the data to be plotted
 #' @param data.column the name of the column containing the data to be plotted
 #' @param group.column the name of the column containing the group names for the data
@@ -13,6 +13,7 @@
 #' @param show.standard.dev whether the standard deviation rectangle should be
 #' plotted
 #' @param show.confidence.int whether the confidence interval should be plotted
+#' @param show.quantiles whether the quantiles should be plotted
 #' @param show.mean whether the mean should be plotted
 #' @param show.median whether the median should be plotted
 #' @param orientation "vertical" or "horizontal" whether or not the plot is being
@@ -32,7 +33,10 @@ sea_stack_plot <- function(data,
                            show.mean = T,
                            show.median = F,
                            show.standard.dev = T,
-                           show.confidence.int = F
+                           show.confidence.int = F,
+                           show.quantiles = F,
+                           ci.line.length = nrow(data)/100,
+                           quant.line.length = nrow(data)/100
                            ){
   ## select only the needed columns
   df <- data %>%
@@ -74,7 +78,10 @@ sea_stack_plot <- function(data,
                           show.mean = show.mean,
                           show.median = show.median,
                           show.standard.dev = show.standard.dev,
-                          show.confidence.int = show.confidence.int
+                          show.confidence.int = show.confidence.int,
+                          show.quantiles = show.quantiles,
+                          ci.line.length = ci.line.length,
+                          quant.line.length = quant.line.length
                           ) +
       scale_x_reverse() +
       theme_seastack() +
@@ -93,7 +100,8 @@ sea_stack_plot <- function(data,
                           show.mean = show.mean,
                           show.median = show.median,
                           show.standard.dev = show.standard.dev,
-                          show.confidence.int = show.confidence.int
+                          show.confidence.int = show.confidence.int,
+                          show.quantiles = show.quantiles
       ) +
       theme_seastack() +
       labs(x = data.label, y = "Counts")

@@ -67,6 +67,8 @@ binBounds <- function(value, bin.width){
 #' This function allows you to calculate the breaks between bins
 #' @param value the data you want to calculate the stats of
 #' @param bin.width the bin width that will be used to plot the data
+#'
+#' @export
 histBreaks <- function(value, bin.width){
   ## Compute the bin bounds
   bin.bounds <- binBounds(value, bin.width)

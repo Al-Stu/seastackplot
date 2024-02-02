@@ -5,7 +5,7 @@
 #' This function allows you to transform the stats into the ggplot graph's
 #' coordinate system
 #' @param transformed.coords transformed base coordinates
-#' @param df.stats the calsulated statistics of the raw data (calculated by
+#' @param df.stats the calculated statistics of the raw data (calculated by
 #' dfStats)
 #' @param panel_params the parameters of the plot panel
 #' @param vertical whether or not the plot is being plotter vertically (as
@@ -22,7 +22,11 @@ transformStats <- function(transformed.coords, df.stats, panel_params, vertical 
                     lower.standard.dev = scales::rescale(df.stats$lower.standard.dev, from = panel_params$y.range),
                     upper.standard.dev = scales::rescale(df.stats$upper.standard.dev, from = panel_params$y.range),
                     lower.confidence.int = scales::rescale(df.stats$lower.confidence.int, from = panel_params$y.range),
-                    upper.confidence.int = scales::rescale(df.stats$upper.confidence.int, from = panel_params$y.range)
+                    upper.confidence.int = scales::rescale(df.stats$upper.confidence.int, from = panel_params$y.range),
+                    lower.quant = scales::rescale(df.stats$lower.quant, from = panel_params$y.range),
+                    upper.quant = scales::rescale(df.stats$upper.quant, from = panel_params$y.range),
+                    ci.line.length = scales::rescale(df.stats$ci.line.length, from = panel_params$x.range),
+                    quant.line.length = scales::rescale(df.stats$quant.line.length, from = panel_params$x.range)
       )
   } else{
     transformed.coords %>%
@@ -35,7 +39,11 @@ transformStats <- function(transformed.coords, df.stats, panel_params, vertical 
                     lower.standard.dev = scales::rescale(df.stats$lower.standard.dev, from = panel_params$x.range),
                     upper.standard.dev = scales::rescale(df.stats$upper.standard.dev, from = panel_params$x.range),
                     lower.confidence.int = scales::rescale(df.stats$lower.confidence.int, from = panel_params$x.range),
-                    upper.confidence.int = scales::rescale(df.stats$upper.confidence.int, from = panel_params$x.range)
+                    upper.confidence.int = scales::rescale(df.stats$upper.confidence.int, from = panel_params$x.range),
+                    lower.quant = scales::rescale(df.stats$lower.quant, from = panel_params$x.range),
+                    upper.quant = scales::rescale(df.stats$upper.quant, from = panel_params$x.range),
+                    ci.line.length = scales::rescale(df.stats$ci.line.length, from = panel_params$y.range),
+                    quant.line.length = scales::rescale(df.stats$quant.line.length, from = panel_params$y.range)
                     )
   }
 }
@@ -68,7 +76,7 @@ baselineGrob <- function(coords, vertical = T){
 #' @param vertical whether or not the plot is being plotter vertically (as
 #' opposed to horizontally)
 standardDevGrob <- function(coords, vertical = T){
-  gp <- grid::gpar(fill="grey30", col = NA) # set aesthetics so they can be used in both
+  gp <- grid::gpar(fill="grey50", col = NA) # set aesthetics so they can be used in both
 
   if(vertical){
     grid::rectGrob(x = coords$x.scaled.0,
@@ -89,33 +97,73 @@ standardDevGrob <- function(coords, vertical = T){
   }
 }
 
-#' Confidence interval grob
+#' Pick which error coordinate to plot
+#'
+#' @param coords the transformed coordinates and stats
+#' @param conf.or.quant whether the confidence interval or quantiles are being
+#' plotted
+#' @param upper.or.lower whether it is the upper or lower bound being plotted
+
+errorCoordinate <- function(coords, conf.or.quant, upper.or.lower){
+  ifelse(conf.or.quant == "conf",
+         ifelse(upper.or.lower == "upper",
+                coords$upper.confidence.int,
+                coords$lower.confidence.int
+                ),
+         ifelse(upper.or.lower == "upper",
+                coords$upper.quant,
+                coords$lower.quant
+                )
+         )
+}
+
+#' Error ticks grob
 #'
 #' This function allows you to create one of the linesGrob for the confidence
-#' interval ticks
+#' interval or quantile ticks
 #' @param coords the transformed coordinates and stats
+#' @param conf.or.quant whether the confidence interval or quantiles are being
+#' plotted
 #' @param upper.or.lower whether it is the upper or lower bound being plotted
 #' @param vertical whether or not the plot is being plotter vertically (as
 #' opposed to horizontally)
-confidenceIntGrob <- function(coords, upper.or.lower, vertical = T){
+errorTicksGrob <- function(coords, conf.or.quant,
+                           upper.or.lower, vertical = T,
+                           length = 1
+                           ){
 
-  conf.int <- ifelse(upper.or.lower == "lower",
-                     rep_len(coords$lower.confidence.int,2),
-                     ifelse(upper.or.lower == "upper",
-                            rep_len(coords$upper.confidence.int,2),
-                            warning("incorrect value given for upper.or.lower, please replace"))
+  to.plot <- rep_len(errorCoordinate(coords = coords,
+                                     conf.or.quant = conf.or.quant,
+                                     upper.or.lower = upper.or.lower
+                                     ),
+                     2
                      )
 
-  gp <- grid::gpar(col = "red", lwd = 2.5) # set aesthetics so they can be used in both
+  gp <- grid::gpar(col = ifelse(conf.or.quant == "conf",
+                                "red",
+                                "black"
+                                ),
+                   lwd = 2.5
+                   ) # set aesthetics so they can be used in both
 
   if(vertical){
-    grid::linesGrob(x = c(coords$x.scaled.0, coords$x.scaled.1),
-                    y = conf.int,
+    grid::linesGrob(x = c(coords$x.scaled.0,
+                          ifelse(length ==1,
+                                 coords$x.scaled.1,
+                                 coords$x.scaled.0 + (coords$x.scaled.1-coords$x.scaled.0)*length
+                                 )
+                          ),
+                    y = to.plot,
                     gp = gp
                     )
   } else{
-    grid::linesGrob(x = conf.int,
-                    y = c(coords$y.scaled.0, coords$y.scaled.1),
+    grid::linesGrob(x = to.plot,
+                    y = c(coords$y.scaled.0,
+                          ifelse(length ==1,
+                                 coords$y.scaled.1,
+                                 coords$y.scaled.1*length
+                                 )
+                          ),
                     gp = gp
                     )
   }
@@ -133,13 +181,13 @@ meanGrob <- function(coords, mean.size = 4, vertical = T){
     grid::pointsGrob(x = coords$x.scaled.0,
                      y = coords$mean, # this should be adjustable and equal to half the height of the sd rectangle
                      pch = 23,
-                     gp = grid::gpar(size = mean.size)
+                     size = unit(mean.size, "mm")
                      )
   } else{
     grid::pointsGrob(x = coords$mean,
                      y = coords$y.scaled.0, # this should be adjustable and equal to half the height of the sd rectangle
                      pch = 23,
-                     gp = grid::gpar(size = mean.size)
+                     size = unit(mean.size, "mm")
                      )
   }
 }
@@ -156,13 +204,13 @@ medianGrob <- function(coords, median.size = 3.2, vertical = T){
     grid::pointsGrob(x = coords$x.scaled.0,
                      y = coords$median, # this should be adjustable and equal to half the height of the sd rectangle
                      pch = 16,
-                     gp = grid::gpar(size = median.size)
+                     size = unit(median.size, "mm")
                      )
   } else{
     grid::pointsGrob(x = coords$median,
                      y = coords$y.scaled.0, # this should be adjustable and equal to half the height of the sd rectangle
                      pch = 16,
-                     gp = grid::gpar(size = median.size)
+                     size = unit(median.size, "mm")
                      )
   }
 }

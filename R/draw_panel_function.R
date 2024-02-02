@@ -9,6 +9,7 @@
 #' @param show.standard.dev whether the standard deviation rectangle should be
 #' plotted
 #' @param show.confidence.int whether the confidence interval should be plotted
+#' @param show.quantiles whether the quantiles should be plotted
 #' @param show.mean whether the mean should be plotted
 #' @param show.median whether the median should be plotted
 #'
@@ -16,7 +17,9 @@
 draw_panel_function <- function(data, panel_params, coord,
                                 bin.width, mean.size, median.size,
                                 show.standard.dev, show.confidence.int,
-                                show.mean, show.median) {
+                                show.quantiles,
+                                show.mean, show.median,
+                                ci.line.length, quant.line.length) {
   ## compute the basic stats of the data
   df.stats <- dfStats(value = data$y, bin.width = bin.width)
   vertical <- T
@@ -34,20 +37,6 @@ draw_panel_function <- function(data, panel_params, coord,
     standard.dev.rectangle <- standardDevGrob(coords = coords, vertical = vertical)
   } else{
     standard.dev.rectangle <- grid::nullGrob()
-  }
-
-  ## draw two lines, each one confidence interval away from the mean
-  # (so long as show.confidence.int = T, else plot a null grob)
-  if(show.confidence.int){
-    lower.ci.line <- confidenceIntGrob(coords = coords,
-                                       upper.or.lower = "lower",
-                                       vertical = vertical)
-    upper.ci.line <- confidenceIntGrob(coords = coords,
-                                       upper.or.lower = "upper",
-                                       vertical = vertical)
-  } else{
-    lower.ci.line <- grid::nullGrob()
-    upper.ci.line <- grid::nullGrob()
   }
 
   ## draw a diamond for the mean
@@ -71,13 +60,50 @@ draw_panel_function <- function(data, panel_params, coord,
     median.dot <- grid::nullGrob()
   }
 
+  ## draw two lines, each one confidence interval away from the mean
+  # (so long as show.confidence.int = T, else plot a null grob)
+  if(show.confidence.int){
+    lower.ci.line <- errorTicksGrob(coords = coords,
+                                    conf.or.quant = "conf",
+                                    upper.or.lower = "lower",
+                                    vertical = vertical,
+                                    ci.line.length)
+    upper.ci.line <- errorTicksGrob(coords = coords,
+                                    conf.or.quant = "conf",
+                                    upper.or.lower = "upper",
+                                    vertical = vertical,
+                                    ci.line.length)
+  } else{
+    lower.ci.line <- grid::nullGrob()
+    upper.ci.line <- grid::nullGrob()
+  }
+
+  # (so long as show.confidence.int = T, else plot a null grob)
+  if(show.quantiles){
+    lower.quant.line <- errorTicksGrob(coords = coords,
+                                       conf.or.quant = "quant",
+                                       upper.or.lower = "lower",
+                                       vertical = vertical,
+                                       length = quant.line.length)
+    upper.quant.line <- errorTicksGrob(coords = coords,
+                                       conf.or.quant = "quant",
+                                       upper.or.lower = "upper",
+                                       vertical = vertical,
+                                       length = quant.line.length)
+  } else{
+    lower.quant.line <- grid::nullGrob()
+    upper.quant.line <- grid::nullGrob()
+  }
+
   ## return all the grobs to be drawn
   grid::gTree(children = grid::gList(base.line,
                                standard.dev.rectangle,
+                               mean.diamond,
+                               median.dot,
                                lower.ci.line,
                                upper.ci.line,
-                               mean.diamond,
-                               median.dot
+                               lower.quant.line,
+                               upper.quant.line
                                )
               )
 
