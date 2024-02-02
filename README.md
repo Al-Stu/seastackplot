@@ -1,10 +1,5 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # seastackplot
-
-<!-- badges: start -->
-<!-- badges: end -->
 
 The goal of seastackplot is to create graphs that accurately represent
 the distribution and summary statistics of data.
@@ -42,8 +37,9 @@ library(seastackplot)
 sea_stack_plot(data = ggplot2::diamonds,
                data.column = 'price',
                group.column = 'cut',
-               bin.width = 1000 # bin.width defaults to 1, for this data that is
+               bin.width = 1000, # bin.width defaults to 1, for this data that is
                                 # too high resolution so we set it to 1000
+               show.confidence.int = T
                )
 ```
 
@@ -55,9 +51,9 @@ axis, if left NULL (default), will be the value of data.column
 
 - `bin.width` the bin width being used to plot
 
-- `mean.size` the size of the diamond showing the mean
+- `mean.size` the size of the diamond showing the mean, measured in mm
 
-- `median.size` the size of the point showing the median
+- `median.size` the size of the point showing the median, measured in mm
 
 - `orientation` “vertical” or “horizontal”, whether or not the plot is
   being plotted vertically (default) or horizontally
@@ -72,23 +68,29 @@ axis, if left NULL (default), will be the value of data.column
 - `show.confidence.int` whether the confidence interval should be
   plotted
 
+- `show.quantiles` whether the confidence interval should be plotted
+
+- `ci.line.length` the length of the ‘ticks’ showing the upper and lower
+  bounds of the confidence interval, measured on the same scale as the
+  histogram
+
+- `ci.line.length` the length of the ‘ticks’ showing the upper and lower
+  bounds of the confidence interval, measured on the same scale as the
+  histogram
+
 ``` r
 sea_stack_plot(data = ggplot2::diamonds,
-               data.column = 'z',
+               data.column = 'carat',
+               data.label = 'Carat',
                group.column = 'cut',
-               data.label = 'Depth',
-               show.mean = T, 
-               show.median = T, 
-               show.standard.dev = F, 
-               show.confidence.int = T
+               bin.width = 0.2,
+               show.mean = F, 
+               show.standard.dev = F, # as mean and standard deviation shows by default need to manually silence them
+               show.median = T,
+               # show.quantiles = T,
+               # quant.line.length = 300,
+               median.size = 3
                )
 ```
 
-<img src="man/figures/README-an alternative plot-1.png" width="100%" />
-
-<!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. -->
-<!-- You can also embed plots, for example: -->
-<!-- ```{r pressure, echo = FALSE} -->
-<!-- plot(pressure) -->
-<!-- ``` -->
-<!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN. -->
+<img src="man/figures/README-plot showing all stats-1.png" width="100%" />

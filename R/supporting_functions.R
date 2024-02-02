@@ -20,6 +20,46 @@ sem <- function(value, na.rm = F) {
   sd(value)/sqrt(length(value))
 }
 
+#' Calculate z-value
+#'
+#' This function allows you to get the z-value to find custom-sized
+#' confidence intervals
+#' @param ci.width the bin width that will be used to plot the data
+
+confidenceIntZ <- function(ci.width = 0.95){
+  # turn percentages into proportion
+  if(ci.width >= 1){
+    ci.width <- ci.width/100
+    }
+
+  alpha <- 1-ci.width
+  alpha.by.two <- alpha/2
+  area <- 1-alpha.by.two
+  z <- qnorm(area)
+
+  z
+}
+
+#' Calculate quantiles
+#'
+#' This function allows you to find the upper and lower quantiles of data
+#' @param value  the data you want to calculate the stats of
+#' @param quant.width the bin width that will be used to plot the data
+quantileValues <- function(value, quant.width = 0.5){
+  # turn percentages into proportion
+  if(quant.width >= 1){
+    quant.width <- quant.width/100
+  }
+
+  proportion.outside <- 1-quant.width
+  on.each.side <- proportion.outside/2
+  quantile.proportions <- c(on.each.side, 1-on.each.side)
+  quantile.values <- quantile(value, quantile.proportions)
+
+  quantile.values
+}
+
+
 #' Calculate stats of the dataset
 #'
 #' This function allows you to calculate all of the stats required for seastack
@@ -29,11 +69,17 @@ sem <- function(value, na.rm = F) {
 dfStats <- function(value, bin.width){
   bin.bounds <- binBounds(value, bin.width)
 
+  confidence.int.z <- confidenceIntZ()
+
+  quantiles <- quantileValues(value = value)
+
   df.stats <- data.frame(mean = mean(value),
                          standard.dev = sd(value),
                          median = median(value),
                          SEM = sem(value, na.rm = T),
-                         confidence.int = 1.96*sem(value, na.rm = T),
+                         confidence.int = confidence.int.z*sem(value, na.rm = T),
+                         lower.quant = quantiles[1],
+                         upper.quant = quantiles[2],
                          min = bin.bounds$min,
                          max = bin.bounds$max
                          ) %>%

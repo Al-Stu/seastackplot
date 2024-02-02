@@ -80,8 +80,8 @@ sea_stack_plot(data = ggplot2::diamonds,
                show.mean = F, 
                show.standard.dev = F, # as mean and standard deviation shows by default need to manually silence them
                show.median = T,
-               show.quantiles = T,
-               quant.line.length = 300,
+               # show.quantiles = T,
+               # quant.line.length = 300,
                median.size = 3
                )
 ```

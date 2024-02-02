@@ -2,7 +2,7 @@
 % Please edit documentation in R/seastackplot.R
 \name{sea_stack_plot}
 \alias{sea_stack_plot}
-\title{geom_sea_stack}
+\title{seastackplot}
 \usage{
 sea_stack_plot(
   data,
@@ -48,6 +48,6 @@ plotted}
 \item{show.confidence.int}{whether the confidence interval should be plotted}
 }
 \description{
-Add seastack statistics to your vertical histogram! Uses standard ggplot
-parameters on top of those described
+Plot a sea stack plot with summary statistics and histogram! This is the
+easiest way to plot a sea stack plot.
 }
