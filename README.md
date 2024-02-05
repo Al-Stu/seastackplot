@@ -94,3 +94,6 @@ sea_stack_plot(data = ggplot2::diamonds,
 ```
 
 <img src="man/figures/README-plot showing all stats-1.png" width="100%" />
+
+An important statistic when working with sea stack plots is the maximum
+bin size within any group (i.e. the width of the count axis)

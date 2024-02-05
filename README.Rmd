@@ -85,3 +85,5 @@ sea_stack_plot(data = ggplot2::diamonds,
                median.size = 3
                )
 ```
+
+An important statistic when working with sea stack plots is the maximum bin size within any group (i.e. the width of the count axis)
